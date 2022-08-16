@@ -88,9 +88,6 @@ class Model:
         item = item
 
         opcoes = '1 - Ir ás compras com esta lista\n' \
-                 '2 - Adicionar item\n' \
-                 '3 - Remover item\n' \
-                 '9 - Por todos itens fora do carrinho'
 
         texto_final = Model.texto_final
 
@@ -132,11 +129,10 @@ class Model:
 
         return [texto_inicial, item, opcoes, texto_final]
 
-    @staticmethod
-    def remover_item_nesta_lista():
+    def remover_item_nesta_lista(self, lista_atual):
         texto_inicial = Model.texto_inicial, 'Removendo Item'
 
-        item = ''
+        item = lista_atual
 
         opcoes = ''
 
@@ -271,12 +267,14 @@ class Model:
 
     @staticmethod
     def banco_listas_cadastradas():
+        lista = []
         conn = sqlite3.connect(Model.banco_dados)
         cursor = conn.cursor()
         cursor.execute('''
                         SELECT * FROM lista_compras
                         ''')
-        lista = cursor.fetchall()
+        for i in cursor.fetchall():
+            lista.append(i)
         conn.close()
         return lista
 
@@ -290,4 +288,3 @@ class Model:
         lista = cursor.fetchall()
         conn.close()
         return lista
-

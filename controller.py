@@ -5,7 +5,6 @@ class Controller:
 
     def menu_principal(self):
         try:
-            self.model.deletar_listas_vazias()
             opcao = self.view.menu_principal(self.model.menu_principal())
             if opcao == '1':
                 self.menu_cadastro_lista()
@@ -21,6 +20,7 @@ class Controller:
     def menu_cadastro_lista(self):
         try:
             opcao = self.view.menu_cadastro_lista(self.model.menu_cadastro_lista())
+            self.model.salvar_cadastro_lista(opcao)
             if opcao == '0':
                 self.menu_principal()
             else:
@@ -30,9 +30,9 @@ class Controller:
 
     def menu_cadastro_itens_lista(self):
         try:
-
             item = self.view.menu_cadastro_itens_lista(self.model.menu_cadastro_itens_lista())
             if item[0] == '0' or item[1] == '0':
+                self.model.deletar_listas_vazias()
                 self.menu_principal()
             else:
                 self.view.valor_salvo_com_sucesso(self.model.salvar_cadastro_item(item[0], item[1]))
@@ -44,6 +44,7 @@ class Controller:
 
     def menu_ver_listas_cadastradas(self):
         try:
+
             listas = self.model.ver_listas_cadastradas()
             opcao = self.view.menu_ver_listas_cadastradas(self.model.menu_ver_listas_cadastradas(item=listas))
             if opcao == '0':
@@ -84,6 +85,7 @@ class Controller:
 
     def adicionar_item_nesta_lista(self, lista_atual):
         try:
+            print(lista_atual)
             opcao = self.view.adicionar_item_nesta_lista(self.model.adicionar_item_nesta_lista())
             if opcao == '0':
                 self.menu_lista_acessada(lista_atual)
@@ -92,7 +94,8 @@ class Controller:
 
     def remover_item_nesta_lista(self, lista_atual):
         try:
-            opcao = self.view.remover_item_nesta_lista(self.model.remover_item_nesta_lista())
+            print(lista_atual)
+            opcao = self.view.remover_item_nesta_lista(self.model.remover_item_nesta_lista(lista_atual))
             if opcao == '0':
                 self.menu_lista_acessada(lista_atual)
         except Exception as e:

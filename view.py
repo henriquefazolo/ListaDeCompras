@@ -13,7 +13,7 @@ class View:
     cor_item = Fore.RESET + Style.RESET_ALL
     cor_opcoes = Fore.CYAN
     cor_texto_final = Fore.LIGHTRED_EX + Style.NORMAL
-    cor_input = Fore.RESET
+    cor_input = Fore.RESET + Style.RESET_ALL
 
     @staticmethod
     def menu_principal(retorno, cor_texto_inicial=cor_texto_inicial, cor_item=cor_item, cor_opcoes=cor_opcoes,
