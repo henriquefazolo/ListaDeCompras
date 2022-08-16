@@ -63,10 +63,6 @@ class Controller:
                 self.menu_principal()
             elif opcao == '1':
                 self.ir_as_compras(lista_atual)
-            elif opcao == '2':
-                self.adicionar_item_nesta_lista(lista_atual)
-            elif opcao == '3':
-                self.remover_item_nesta_lista(lista_atual)
         except Exception as e:
             print(e)
 
@@ -80,8 +76,9 @@ class Controller:
                 item = self.model.crud_itens_no_carrinho(lista_atual, opcao)
                 self.model.atualizar_carrinho(item[2])
                 self.ir_as_compras(lista_atual)
-        finally:
+        except IndexError:
             self.compras_finalizadas()
+
 
     def adicionar_item_nesta_lista(self, lista_atual):
         try:
