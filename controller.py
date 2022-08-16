@@ -4,51 +4,70 @@ class Controller:
         self.view = view
 
     def menu_principal(self):
-        opcao = self.view.menu_principal(self.model.menu_principal())
-        if opcao == '1':
-            self.menu_cadastro_lista()
-        if opcao == '2':
-            self.menu_ver_listas_cadastradas()
-        if opcao == '0':
-            exit()
+        try:
+            self.model.deletar_listas_vazias()
+            opcao = self.view.menu_principal(self.model.menu_principal())
+            if opcao == '1':
+                self.menu_cadastro_lista()
+            elif opcao == '2':
+                self.menu_ver_listas_cadastradas()
+            elif opcao == '0':
+                exit()
+            else:
+                self.menu_principal()
+        except Exception as e:
+            print(e)
 
     def menu_cadastro_lista(self):
-        opcao = self.view.menu_cadastro_lista(self.model.menu_cadastro_lista())
-        if opcao == '0':
-            self.menu_principal()
-        else:
-            self.view.valor_salvo_com_sucesso(self.model.salvar_cadastro_lista(opcao))
-            self.menu_cadastro_itens_lista()
+        try:
+            opcao = self.view.menu_cadastro_lista(self.model.menu_cadastro_lista())
+            if opcao == '0':
+                self.menu_principal()
+            else:
+                self.menu_cadastro_itens_lista()
+        except Exception as e:
+            print(e)
 
     def menu_cadastro_itens_lista(self):
-        self.model.deletar_listas_vazias()
-        item = self.view.menu_cadastro_itens_lista(self.model.menu_cadastro_itens_lista())
-        if item[0] == '0' or item[1] == '0':
-            self.menu_principal()
-        else:
-            self.view.valor_salvo_com_sucesso(self.model.salvar_cadastro_item(item[0], item[1]))
-            self.menu_cadastro_itens_lista()
+        try:
+
+            item = self.view.menu_cadastro_itens_lista(self.model.menu_cadastro_itens_lista())
+            if item[0] == '0' or item[1] == '0':
+                self.menu_principal()
+            else:
+                self.view.valor_salvo_com_sucesso(self.model.salvar_cadastro_item(item[0], item[1]))
+                self.menu_cadastro_itens_lista()
+        except Exception as e:
+            print(e)
+
+
 
     def menu_ver_listas_cadastradas(self):
-        listas = self.model.ver_listas_cadastradas()
-        opcao = self.view.menu_ver_listas_cadastradas(self.model.menu_ver_listas_cadastradas(item=listas))
-        if opcao == '0':
-            self.menu_principal()
-        else:
-            self.menu_lista_acessada(opcao)
+        try:
+            listas = self.model.ver_listas_cadastradas()
+            opcao = self.view.menu_ver_listas_cadastradas(self.model.menu_ver_listas_cadastradas(item=listas))
+            if opcao == '0':
+                self.menu_principal()
+            else:
+                self.menu_lista_acessada(opcao)
+        except Exception as e:
+            print(e)
 
     def menu_lista_acessada(self, opcao):
-        lista_atual = opcao
-        itens = self.model.ver_itens_lista_selecionada(opcao)
-        opcao = self.view.menu_lista_acessada(self.model.menu_lista_acessada(item=itens))
-        if opcao == '0':
-            self.menu_principal()
-        elif opcao == '1':
-            self.ir_as_compras(lista_atual)
-        elif opcao == '2':
-            self.adicionar_item_nesta_lista(lista_atual)
-        elif opcao == '3':
-            self.remover_item_nesta_lista(lista_atual)
+        try:
+            lista_atual = opcao
+            itens = self.model.ver_itens_lista_selecionada(opcao)
+            opcao = self.view.menu_lista_acessada(self.model.menu_lista_acessada(item=itens))
+            if opcao == '0':
+                self.menu_principal()
+            elif opcao == '1':
+                self.ir_as_compras(lista_atual)
+            elif opcao == '2':
+                self.adicionar_item_nesta_lista(lista_atual)
+            elif opcao == '3':
+                self.remover_item_nesta_lista(lista_atual)
+        except Exception as e:
+            print(e)
 
     def ir_as_compras(self, lista_atual):
         try:
@@ -64,15 +83,24 @@ class Controller:
             self.compras_finalizadas()
 
     def adicionar_item_nesta_lista(self, lista_atual):
-        opcao = self.view.adicionar_item_nesta_lista(self.model.adicionar_item_nesta_lista())
-        if opcao == '0':
-            self.menu_lista_acessada(lista_atual)
+        try:
+            opcao = self.view.adicionar_item_nesta_lista(self.model.adicionar_item_nesta_lista())
+            if opcao == '0':
+                self.menu_lista_acessada(lista_atual)
+        except Exception as e:
+            print(e)
 
     def remover_item_nesta_lista(self, lista_atual):
-        opcao = self.view.remover_item_nesta_lista(self.model.remover_item_nesta_lista())
-        if opcao == '0':
-            self.menu_lista_acessada(lista_atual)
+        try:
+            opcao = self.view.remover_item_nesta_lista(self.model.remover_item_nesta_lista())
+            if opcao == '0':
+                self.menu_lista_acessada(lista_atual)
+        except Exception as e:
+            print(e)
 
     def compras_finalizadas(self):
-        self.view.compras_finalizadas(self.model.compras_finalizadas())
-        self.menu_ver_listas_cadastradas()
+        try:
+            self.view.compras_finalizadas(self.model.compras_finalizadas())
+            self.menu_ver_listas_cadastradas()
+        except Exception as e:
+            print(e)

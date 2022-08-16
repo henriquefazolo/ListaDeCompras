@@ -2,6 +2,7 @@ import sqlite3
 
 
 class Model:
+
     banco_dados = 'banco.sqlite'
     conn = sqlite3.connect(banco_dados)
     cursor = conn.cursor()
@@ -173,7 +174,6 @@ class Model:
             INSERT INTO lista_compras (nome_lista) VALUES (?) 
             ''', [lista.upper()])
             conn.commit()
-
             conn.close()
         except Exception as e:
             print(e)
@@ -191,7 +191,7 @@ class Model:
         ''')
         for i in cursor.fetchall():
             lista.append(f'{i[0]} - {i[1]}')
-
+        conn.close()
         return lista
 
     @staticmethod
@@ -259,4 +259,35 @@ class Model:
 
     @staticmethod
     def deletar_listas_vazias():
-        pass
+        conn = sqlite3.connect(Model.banco_dados)
+        cursor = conn.cursor()
+        cursor.execute('''
+         DELETE FROM lista_compras 
+         WHERE lista_compras.PK_id NOT IN
+         (SELECT FK_lista FROM item)       
+        ''')
+        conn.commit()
+        conn.close()
+
+    @staticmethod
+    def banco_listas_cadastradas():
+        conn = sqlite3.connect(Model.banco_dados)
+        cursor = conn.cursor()
+        cursor.execute('''
+                        SELECT * FROM lista_compras
+                        ''')
+        lista = cursor.fetchall()
+        conn.close()
+        return lista
+
+    @staticmethod
+    def banco_itens_cadastrados():
+        conn = sqlite3.connect(Model.banco_dados)
+        cursor = conn.cursor()
+        cursor.execute('''
+                        SELECT * FROM item
+                        ''')
+        lista = cursor.fetchall()
+        conn.close()
+        return lista
+
